@@ -14,7 +14,7 @@ class CommunityController {
     const { name } = req.body;
 
     if (!name) {
-      throw new AppError(false, "Community Details Not Found", 404);
+      throw new AppError(false, "Community Not Found", 404);
     } else {
       const newCommunity =
         await this.communityServiceInstance.createCommunityService(
@@ -44,41 +44,48 @@ class CommunityController {
     // we assumer if page number is not specified it will be 1
     const pageNumber = req.query?.page || 1;
 
-    const data = await this.communityServiceInstance.getCommunityService(pageNumber);
+    const data = await this.communityServiceInstance.getCommunityService(
+      pageNumber
+    );
 
     return res.status(data?.errorCode).json(data);
   };
 
   getAllMember = async (req, res) => {
-  
-    const {id} = req.params;
-    if(!id || id.includes("id")){
-        
-      throw new AppError(false,"Please Provide ID",404)
-   }
-   else{
-    const pageNumber = req.query?.page || 1;
-   
-    const data = await this.communityServiceInstance.getAllMemberService(id,pageNumber)
+    const { id } = req.params;
+    if (!id || id.includes("id")) {
+      throw new AppError(false, "Please Provide ID", 404);
+    } else {
+      const pageNumber = req.query?.page || 1;
 
-    return res.status(data?.errorCode).json(data)
-   }
+      const data = await this.communityServiceInstance.getAllMemberService(
+        id,
+        pageNumber
+      );
+
+      return res.status(data?.errorCode).json(data);
+    }
   };
 
-  getUserAllCommunity = async(req, res)=>{
-
+  getUserAllCommunity = async (req, res) => {
     const pageNumber = req.query?.page || 1;
 
-    const data = await this.communityServiceInstance.getUserAllCommunityService(req.user._id,pageNumber)
-    return res.status(data?.errorCode).json(data)
-  }
+    const data = await this.communityServiceInstance.getUserAllCommunityService(
+      req.user._id,
+      pageNumber
+    );
+    return res.status(data?.errorCode).json(data);
+  };
 
-  getMyJoinedCommunity = async(req,res)=>{
+  getMyJoinedCommunity = async (req, res) => {
     const pageNumber = req.query?.page || 1;
 
-    const data = await this.communityServiceInstance.getUserAllJoinedCommunity(req.user._id,pageNumber)
-    return res.status(data?.errorCode).json(data)
-  }
+    const data = await this.communityServiceInstance.getUserAllJoinedCommunity(
+      req.user._id,
+      pageNumber
+    );
+    return res.status(data?.errorCode).json(data);
+  };
 }
 
 module.exports = CommunityController;
